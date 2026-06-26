@@ -1,4 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  --bg-page:      #F5F4FE; /* body / main */
+  --bg-surface:   #FFFFFF; /* cards, κελιά, score board */
+  --bg-header:    #7C3AED; /* header */
+  --bg-footer:    #EEEDFE; /* footer */
+
+  --color-primary: #7C3AED; /* X, buttons, hover border */
+  --color-secondary: #534AB7; /* O, σκούρο accent */
+
+  --cell-hover:   #EEEDFE; /* κελί hover background */
+  --cell-win:     #CECBF6; /* νικητήρια κελιά */
+  --border-color: #CECBF6; /* default borders */
+
+  --text-heading: #3C3489; /* τίτλοι */
+  --text-muted:   #7F77DD; /* δευτερεύον κείμενο */
+  --text-inverse: #EEEDFE; /* text πάνω σε σκούρο bg */
+}
+
 *{
     margin:0;
     padding:0;
@@ -12,5 +30,163 @@ body{
     min-height: 100vh;
     display:flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 0;
+    background-color: var(--bg-page);
+}
+
+.header-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--bg-header);
+  color: var(--text-inverse);
+}
+
+.header-container #title{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.header-container #title h2{
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  font-style: italic;
+}
+
+.header-container #new-game-btn{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.header-container #new-game-btn button{
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  color: var(--text-heading);
+}
+
+.header-container #new-game-btn button:hover{
+  background-color: var(--text-heading);
+  color: var(--text-inverse);
+}
+
+main{
+  flex: 1;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border:1px solid var(--cell-win);
+}
+
+main #score{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#score .player{
+  width: 10rem;
+  margin: 2rem;
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  background-color: var(--color-primary);
+  color: var(--text-inverse);
+  border-radius: 8px;
+}
+
+#game-board{
+      width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+}
+
+.gaming-board {
+  display: inline-block; /* ή width: fit-content */
+}
+
+.board-row {
+  display: flex;
+}
+
+.board-row div {
+  width: 100px;
+  height: 100px;
+  border-right: 2px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-heading);
+}
+
+/* Αφαίρεση δεξιού border στο τελευταίο κελί κάθε row */
+.board-row div:last-child {
+  border-right: none;
+}
+
+/* Αφαίρεση κάτω border στο τελευταίο row */
+.board-row:last-child div {
+  border-bottom: none;
+}
+
+.board-row div button{
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-surface);
+  color: var(--color-secondary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+}
+.board-row div button:hover{
+  background-color: var(--text-heading);
+  color: var(--text-inverse);
+}
+
+#player-turn{
+  width: 100%;
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#player-turn span{
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-heading);
+}
+
+
+footer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  background-color: var(--color-secondary);
+  color: var(--text-inverse);
 }

@@ -7,23 +7,49 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <header>
+    <header class="header-container">
       <section id="title" aria-labelledby="title-heading">
         <span>
-          <strong>TIC TAC TOE</strong>
+          <h2>TIC TAC TOE</h2>
+        </span>
+      </section>
+      <section id="new-game-btn" aria-labelledby="new-game-button-heading">
+        <span>
+          <button>New Game</button>
         </span>
       </section>
     </header>
     <main>
       <section id="score" aria-labelledby="score-heading">
-        <div id="player-board"></div>
+        <div class="player">Player 1: 5</div>
+        <div class="player">Player 2: 3</div>
       </section>
-      <section id="game-board" aria-labelledby="game-board-heading"></section>
+      <section id="game-board" aria-labelledby="game-board-heading">
+        <div class="gaming-board">
+          <div class="board-row">
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+          </div>
+          <div class="board-row">
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+          </div>
+          <div class="board-row">
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+            <div><button>x</button></div>
+          </div>
+        </div>
+      </section>
       <section id="player-turn" aria-labelledby="player-turn-heading">
         <span>Player X has turn</span>
       </section>
     </main>
-    <footer></footer>
+    <footer>
+      <span>Created by Chris</span>
+    </footer>
     <script src="./script.js"></script>
   </body>
 </html>
