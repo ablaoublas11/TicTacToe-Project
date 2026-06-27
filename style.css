@@ -1,42 +1,42 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 :root {
-  --bg-page:      #F5F4FE; /* body / main */
-  --bg-surface:   #FFFFFF; /* cards, κελιά, score board */
-  --bg-header:    #7C3AED; /* header */
-  --bg-footer:    #EEEDFE; /* footer */
+  --bg-page: #f5f4fe; /* body / main */
+  --bg-surface: #ffffff; /* cards, κελιά, score board */
+  --bg-header: #7c3aed; /* header */
+  --bg-footer: #eeedfe; /* footer */
 
-  --color-primary: #7C3AED; /* X, buttons, hover border */
-  --color-secondary: #534AB7; /* O, σκούρο accent */
+  --color-primary: #7c3aed; /* X, buttons, hover border */
+  --color-secondary: #534ab7; /* O, σκούρο accent */
 
-  --cell-hover:   #EEEDFE; /* κελί hover background */
-  --cell-win:     #CECBF6; /* νικητήρια κελιά */
-  --border-color: #CECBF6; /* default borders */
+  --cell-hover: #eeedfe; /* κελί hover background */
+  --cell-win: #cecbf6; /* νικητήρια κελιά */
+  --border-color: #cecbf6; /* default borders */
 
-  --text-heading: #3C3489; /* τίτλοι */
-  --text-muted:   #7F77DD; /* δευτερεύον κείμενο */
-  --text-inverse: #EEEDFE; /* text πάνω σε σκούρο bg */
+  --text-heading: #3c3489; /* τίτλοι */
+  --text-muted: #7f77dd; /* δευτερεύον κείμενο */
+  --text-inverse: #eeedfe; /* text πάνω σε σκούρο bg */
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
-    font-family: "Fira Sans", sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
-body{
-    min-height: 100vh;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    background-color: var(--bg-page);
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: var(--bg-page);
 }
 
-.header-container{
+.header-container {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -48,26 +48,35 @@ body{
   color: var(--text-inverse);
 }
 
-.header-container #title{
+.header-container #title {
   display: flex;
   justify-content: flex-start;
   width: 100%;
 }
 
-.header-container #title h2{
+.header-container #title h2 {
   font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
   font-style: italic;
 }
 
-.header-container #new-game-btn{
+.header-container #edit-player-btn {
   display: flex;
-  justify-content: flex-end;
-  width: 100%;
+  justify-content: center;
+  width: fit-content;
+  margin-right: 5px;
 }
 
-.header-container #new-game-btn button{
+.header-container #new-game-btn {
+  display: flex;
+  justify-content: flex-end;
+  width: fit-content;
+  margin-left: 5px;
+}
+
+.header-container #new-game-btn button,
+.header-container #edit-player-btn button {
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -77,12 +86,13 @@ body{
   color: var(--text-heading);
 }
 
-.header-container #new-game-btn button:hover{
+.header-container #new-game-btn button:hover,
+.header-container #edit-player-btn button:hover {
   background-color: var(--text-heading);
   color: var(--text-inverse);
 }
 
-main{
+main {
   flex: 1;
   width: 100%;
   max-width: 1000px;
@@ -92,10 +102,10 @@ main{
   justify-content: center;
   align-items: center;
   background-color: var(--bg-surface);
-  border:1px solid var(--cell-win);
+  border: 1px solid var(--cell-win);
 }
 
-main #score{
+main #score {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -104,7 +114,7 @@ main #score{
   align-items: center;
 }
 
-#score .player{
+#score .player {
   width: 10rem;
   margin: 2rem;
   padding: 2rem;
@@ -116,12 +126,12 @@ main #score{
   border-radius: 8px;
 }
 
-#game-board{
-      width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem;
+#game-board {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
 }
 
 .gaming-board {
@@ -150,7 +160,7 @@ main #score{
   border-bottom: none;
 }
 
-.board-row div button{
+.board-row div button {
   width: 100%;
   height: 100%;
   background-color: var(--bg-surface);
@@ -160,26 +170,25 @@ main #score{
   text-transform: uppercase;
   border: none;
 }
-.board-row div button:hover{
+.board-row div button:hover {
   background-color: var(--text-heading);
   color: var(--text-inverse);
 }
 
-#player-turn{
+#player-turn {
   width: 100%;
   margin: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#player-turn span{
+#player-turn span {
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-heading);
 }
 
-
-footer{
+footer {
   width: 100%;
   display: flex;
   flex-direction: row;

@@ -13,6 +13,14 @@
           <h2>TIC TAC TOE</h2>
         </span>
       </section>
+      <section
+        id="edit-player-btn"
+        aria-labelledby="edit-player-button-heading"
+      >
+        <span>
+          <button>Edit Players</button>
+        </span>
+      </section>
       <section id="new-game-btn" aria-labelledby="new-game-button-heading">
         <span>
           <button>New Game</button>
@@ -27,19 +35,19 @@
       <section id="game-board" aria-labelledby="game-board-heading">
         <div class="gaming-board">
           <div class="board-row">
-            <div><button>x</button></div>
-            <div><button>x</button></div>
-            <div><button>x</button></div>
+            <div><button data-row="0" data-col="0">x</button></div>
+            <div><button data-row="0" data-col="1">x</button></div>
+            <div><button data-row="0" data-col="2">x</button></div>
           </div>
           <div class="board-row">
-            <div><button>x</button></div>
-            <div><button>x</button></div>
-            <div><button>x</button></div>
+            <div><button data-row="1" data-col="0">x</button></div>
+            <div><button data-row="1" data-col="1">x</button></div>
+            <div><button data-row="1" data-col="2">x</button></div>
           </div>
           <div class="board-row">
-            <div><button>x</button></div>
-            <div><button>x</button></div>
-            <div><button>x</button></div>
+            <div><button data-row="2" data-col="0">x</button></div>
+            <div><button data-row="2" data-col="1">x</button></div>
+            <div><button data-row="2" data-col="2">x</button></div>
           </div>
         </div>
       </section>
