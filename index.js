@@ -5,7 +5,7 @@ const board = [
   [null, null, null],
 ];
 
-//Factory Function
+//Factory Function όπου δημιουργούμε τον παίκτη και ορίζουμε το όνομα και το σύμβολο του
 function createPlayer() {
   let _name = "Player 1";
   let _symbol = null;
@@ -37,7 +37,14 @@ function addSymbol(indexRow, indexCol, symbol) {
 const app = {
   playerData: players,
   boardData: board,
-  init() {},
+  init() {
+    const addPlayerBtn = document.querySelector("#editPlayer");
+    addPlayerBtn.addEventListener("click", () => {
+      document.querySelector("#edit-players").classList.toggle("showing");
+    });
+  },
   render() {},
   editPlayer() {},
 };
+
+app.init();

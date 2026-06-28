@@ -18,12 +18,12 @@
         aria-labelledby="edit-player-button-heading"
       >
         <span>
-          <button>Edit Players</button>
+          <button id="editPlayer">Edit Players</button>
         </span>
       </section>
       <section id="new-game-btn" aria-labelledby="new-game-button-heading">
         <span>
-          <button>New Game</button>
+          <button id="newGame">New Game</button>
         </span>
       </section>
     </header>
@@ -35,29 +35,64 @@
       <section id="game-board" aria-labelledby="game-board-heading">
         <div class="gaming-board">
           <div class="board-row">
-            <div><button data-row="0" data-col="0">x</button></div>
-            <div><button data-row="0" data-col="1">x</button></div>
-            <div><button data-row="0" data-col="2">x</button></div>
+            <div>
+              <button data-row="0" data-col="0"></button>
+            </div>
+            <div>
+              <button data-row="0" data-col="1"></button>
+            </div>
+            <div>
+              <button data-row="0" data-col="2"></button>
+            </div>
           </div>
           <div class="board-row">
-            <div><button data-row="1" data-col="0">x</button></div>
-            <div><button data-row="1" data-col="1">x</button></div>
-            <div><button data-row="1" data-col="2">x</button></div>
+            <div>
+              <button data-row="1" data-col="0"></button>
+            </div>
+            <div>
+              <button data-row="1" data-col="1"></button>
+            </div>
+            <div>
+              <button data-row="1" data-col="2"></button>
+            </div>
           </div>
           <div class="board-row">
-            <div><button data-row="2" data-col="0">x</button></div>
-            <div><button data-row="2" data-col="1">x</button></div>
-            <div><button data-row="2" data-col="2">x</button></div>
+            <div>
+              <button data-row="2" data-col="0"></button>
+            </div>
+            <div>
+              <button data-row="2" data-col="1"></button>
+            </div>
+            <div>
+              <button data-row="2" data-col="2"></button>
+            </div>
           </div>
         </div>
       </section>
       <section id="player-turn" aria-labelledby="player-turn-heading">
         <span>Player X has turn</span>
       </section>
+      <section id="edit-players" aria-labelledby="edit-players-heading">
+        <div class="popup">
+          <div class="playerData">
+            <span>Player 1</span>
+            <input type="text" placeholder="Enter player's name...." />
+            <input type="text" placeholder="Enter player's sympol...." />
+          </div>
+          <div class="playerData">
+            <span>Player 2</span>
+            <input type="text" placeholder="Enter player's name...." />
+            <input type="text" placeholder="Enter player's sympol...." />
+          </div>
+          <div class="saveData">
+            <button class="saveBtn">Save</button>
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
       <span>Created by Chris</span>
     </footer>
-    <script src="./script.js"></script>
+    <script src="./index.js"></script>
   </body>
 </html>
