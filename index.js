@@ -1,6 +1,6 @@
 const players = [
-  { name: "Player 1", symbol: "X" },
-  { name: "Player 2", symbol: "O" },
+  { name: "Player 1", symbol: "X", score: 0 },
+  { name: "Player 2", symbol: "O", score: 0 },
 ];
 const board = [
   [null, null, null],
