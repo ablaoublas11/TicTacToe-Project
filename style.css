@@ -126,6 +126,18 @@ main #score {
   border-radius: 8px;
 }
 
+#winnerSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#winnerSection span {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
 #game-board {
   width: 100%;
   display: flex;

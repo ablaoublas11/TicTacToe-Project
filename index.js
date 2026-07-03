@@ -43,11 +43,110 @@ const app = {
   playerData: players,
   boardData: board,
   currentPlayer: players[0],
+  winningCombinations: [
+    // οριζόντιες
+    [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ],
+    // κάθετες
+    [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+    ],
+    [
+      [0, 2],
+      [1, 2],
+      [2, 2],
+    ],
+    // διαγώνιες
+    [
+      [0, 0],
+      [1, 1],
+      [2, 2],
+    ],
+    [
+      [0, 2],
+      [1, 1],
+      [2, 0],
+    ],
+  ],
   init() {
     const addPlayerBtn = document.querySelector("#editPlayer");
     addPlayerBtn.addEventListener("click", () => {
       document.querySelector("#edit-players").classList.add("showing");
     });
+    //Καλώ την μέθοδο για την επεξεργασία των παικτών
+    this.editPlayer();
+
+    //εδώ θα βάζουμε το σύμβολο του κάθε παίκτη στον πίνακα
+    const board = document.querySelectorAll(".board-row button");
+    const playerTurn = document.querySelector("#player-turn span");
+    //αρχική δήλωση για το ποιος παίκτης έχει σειρά στο παιχνίδι
+    playerTurn.textContent = `${this.currentPlayer.name} has turn`;
+    board.forEach((element) => {
+      element.addEventListener("click", (e) => {
+        //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
+        //αντίστοιχο σύμβολο στο σωστό κελί
+        const row = e.target.dataset.row;
+        const col = e.target.dataset.col;
+        //προσθήκη συμβόλου στον πίνακα
+        addSymbol(row, col, this.currentPlayer.symbol);
+        //απενεργοποίηση κάθε κουμπιού μετά από κάθε κλικ
+        e.target.disabled = true;
+
+        //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
+        const winnerTag = document.querySelector("#winnerSection span");
+        if (this.checkWinner()) {
+          winnerTag.textContent = `${this.currentPlayer.name} win!`;
+        }
+
+        //εναλλαγή της σειράς του παίκτη
+        this.currentPlayer =
+          this.currentPlayer === this.playerData[0]
+            ? this.playerData[1]
+            : this.playerData[0];
+        //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
+        playerTurn.textContent = `${this.currentPlayer.name} has turn`;
+        this.renderBoard();
+      });
+    });
+  },
+  renderPalyers() {
+    //Αλλαγή ονομάτων παικτών στον πίνακα από
+    const playersName = document.querySelectorAll("#score .player");
+    playersName.forEach((element, index) => {
+      element.textContent = this.playerData[index].name;
+      index++;
+    });
+  },
+  renderBoard() {
+    //εμφάνιση του συμβόλου του κάθε παίκτη μετά από κάθε κλικ
+    const board = document.querySelectorAll(".board-row button");
+    board.forEach((element) => {
+      const cellValue =
+        this.boardData[element.dataset.row][element.dataset.col];
+      element.textContent = cellValue ?? "";
+    });
+  },
+  editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
     const saveBtn = document.querySelector(".saveBtn");
     saveBtn.addEventListener("click", () => {
@@ -60,61 +159,14 @@ const app = {
       document.querySelector("#edit-players").classList.remove("showing");
       this.renderPalyers();
     });
-
-    //εδώ θα βάζουμε το σύμβολο του κάθε παίκτη στον πίνακα
-    const board = document.querySelectorAll(".board-row button");
-    board.forEach((element) => {
-      element.addEventListener("click", (e) => {
-        //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
-        //αντίστοιχο σύμβολο στο σωστό κελί
-        const row = e.target.dataset.row;
-        const col = e.target.dataset.col;
-
-        addSymbol(row, col, this.currentPlayer.symbol);
-
-        this.currentPlayer =
-          this.currentPlayer === this.playerData[0]
-            ? this.playerData[1]
-            : this.playerData[0];
-        this.renderBoard();
+  },
+  checkWinner() {
+    return this.winningCombinations.some((combinations) => {
+      return combinations.every(([row, col]) => {
+        return this.boardData[row][col] === this.currentPlayer.symbol;
       });
     });
-    this.checkWinner();
   },
-  renderPalyers() {
-    //Αλλαγή ονομάτων παικτών στον πίνακα από
-    const playersName = document.querySelectorAll("#score .player");
-    playersName.forEach((element, index) => {
-      element.textContent = this.playerData[index].name;
-      index++;
-    });
-  },
-  renderBoard() {
-    const board = document.querySelectorAll(".board-row button");
-    board.forEach((element) => {
-      const cellValue =
-        this.boardData[element.dataset.row][element.dataset.col];
-      element.textContent = cellValue ?? "";
-    });
-  },
-  editPlayer() {},
-  checkWinner(){
-    const winningCombinations = [
-      // οριζόντιες
-      [[0,0],[0,1],[0,2]],
-      [[1,0],[1,1],[1,2]],
-      [[2,0],[2,1],[2,2]],
-      // κάθετες
-      [[0,0],[1,0],[2,0]],
-      [[0,1],[1,1],[2,1]],
-      [[0,2],[1,2],[2,2]],
-      // διαγώνιες
-      [[0,0],[1,1],[2,2]],
-      [[0,2],[1,1],[2,0]],
-    ];
-
-    
-  }
 };
 
 app.init();
