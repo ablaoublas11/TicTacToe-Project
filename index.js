@@ -12,14 +12,16 @@ const board = [
 function createPlayer() {
   let _name = "Player 1";
   let _symbol = null;
+  let _score = 0;
 
   const getPlayer = () => {
-    return { name: _name, symbol: _symbol };
+    return { name: _name, symbol: _symbol, score: _score };
   };
 
   const setPlayer = (newName, newSymbol) => {
     _name = newName;
     _symbol = newSymbol;
+    _score = 0;
   };
 
   return { getPlayer, setPlayer };
@@ -29,7 +31,7 @@ function createPlayer() {
 function addPlayer(index, name, symbol) {
   const player = createPlayer();
   player.setPlayer(name, symbol);
-  players[index] = { name, symbol };
+  players[index] = player.getPlayer();
 }
 
 //μέθοδος με την οποία δηλώνουμε το σύμβολο στο κελί που επιλέγει ο εκάστοτε παίκτης
@@ -77,7 +79,7 @@ const app = {
         this.renderBoard();
       });
     });
-    //this.render();
+    this.checkWinner();
   },
   renderPalyers() {
     //Αλλαγή ονομάτων παικτών στον πίνακα από
@@ -96,6 +98,23 @@ const app = {
     });
   },
   editPlayer() {},
+  checkWinner(){
+    const winningCombinations = [
+      // οριζόντιες
+      [[0,0],[0,1],[0,2]],
+      [[1,0],[1,1],[1,2]],
+      [[2,0],[2,1],[2,2]],
+      // κάθετες
+      [[0,0],[1,0],[2,0]],
+      [[0,1],[1,1],[2,1]],
+      [[0,2],[1,2],[2,2]],
+      // διαγώνιες
+      [[0,0],[1,1],[2,2]],
+      [[0,2],[1,1],[2,0]],
+    ];
+
+    
+  }
 };
 
 app.init();
