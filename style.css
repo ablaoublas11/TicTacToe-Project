@@ -250,7 +250,8 @@ main #score {
 }
 
 #edit-players .playerData,
-#edit-players .saveData {
+#edit-players .saveData,
+#edit-players .closeData {
   width: 60%;
   display: flex;
   flex-direction: row;
@@ -278,7 +279,8 @@ main #score {
   background-color: var(--bg-surface);
 }
 
-#edit-players .saveData button {
+#edit-players .saveData button,
+#edit-players .closeData button {
   margin: 1rem;
   border: none;
   padding: 10px 20px;
@@ -290,7 +292,8 @@ main #score {
   color: var(--text-inverse);
 }
 
-#edit-players .saveData button:hover {
+#edit-players .saveData button:hover,
+#edit-players .closeData button:hover {
   background-color: var(--bg-surface);
   color: var(--text-heading);
 }

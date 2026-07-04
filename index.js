@@ -88,20 +88,41 @@ const app = {
       [2, 0],
     ],
   ],
+  elements: {
+    editPlayersSection: document.querySelector("#edit-players"), //ok
+    boardButtons: document.querySelectorAll(".board-row button"), //ok
+    playerTurnSpan: document.querySelector("#player-turn span"), //ok
+    winnerSpan: document.querySelector("#winnerSection span"), //ok
+    scoreElements: document.querySelectorAll("#score .player"), //ok
+    saveBtn: document.querySelector(".saveBtn"), //ok
+    editPlayerBtn: document.querySelector("#editPlayer"), //ok
+    newGameBtn: document.querySelector("#newGame"), //ok
+    closeEditPalyerBtn: document.querySelector(".closeBtn"), //ok
+  },
   init() {
-    const addPlayerBtn = document.querySelector("#editPlayer");
-    addPlayerBtn.addEventListener("click", () => {
-      document.querySelector("#edit-players").classList.add("showing");
+    this.elements.editPlayerBtn.addEventListener("click", () => {
+      this.elements.editPlayersSection.classList.add("showing");
+    });
+    this.elements.closeEditPalyerBtn.addEventListener("click", () => {
+      this.closeEditPlayer();
     });
     //Καλώ την μέθοδο για την επεξεργασία των παικτών
     this.editPlayer();
 
+    //καλώ την μέθοδο για να κάνω reset το παιχνίδι
+    this.elements.newGameBtn.addEventListener("click", () => {
+      this.newGame();
+    });
+
+    //καλώ την μέθοδο για την προσθήκη του συμβόλου στον πίνακα
+    this.addPlayerSymbol();
+  },
+  //προσθήκη συμβόλου στον πίνακα και έλεγχος νικητή σε κάθε γύρο
+  addPlayerSymbol() {
     //εδώ θα βάζουμε το σύμβολο του κάθε παίκτη στον πίνακα
-    const board = document.querySelectorAll(".board-row button");
-    const playerTurn = document.querySelector("#player-turn span");
     //αρχική δήλωση για το ποιος παίκτης έχει σειρά στο παιχνίδι
-    playerTurn.textContent = `${this.currentPlayer.name} has turn`;
-    board.forEach((element) => {
+    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+    this.elements.boardButtons.forEach((element) => {
       element.addEventListener("click", (e) => {
         //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
         //αντίστοιχο σύμβολο στο σωστό κελί
@@ -113,9 +134,11 @@ const app = {
         e.target.disabled = true;
 
         //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
-        const winnerTag = document.querySelector("#winnerSection span");
         if (this.checkWinner()) {
-          winnerTag.textContent = `${this.currentPlayer.name} win!`;
+          this.disableBoard();
+          this.elements.winnerSpan.textContent = `${this.currentPlayer.name} win!`;
+        } else if (this.checkDraw()) {
+          this.elements.winnerSpan.textContent = "It' s a Draw!";
         }
 
         //εναλλαγή της σειράς του παίκτη
@@ -124,23 +147,21 @@ const app = {
             ? this.playerData[1]
             : this.playerData[0];
         //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
-        playerTurn.textContent = `${this.currentPlayer.name} has turn`;
+        this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
         this.renderBoard();
       });
     });
   },
   renderPalyers() {
     //Αλλαγή ονομάτων παικτών στον πίνακα από
-    const playersName = document.querySelectorAll("#score .player");
-    playersName.forEach((element, index) => {
+    this.elements.scoreElements.forEach((element, index) => {
       element.textContent = this.playerData[index].name;
       index++;
     });
   },
   renderBoard() {
     //εμφάνιση του συμβόλου του κάθε παίκτη μετά από κάθε κλικ
-    const board = document.querySelectorAll(".board-row button");
-    board.forEach((element) => {
+    this.elements.boardButtons.forEach((element) => {
       const cellValue =
         this.boardData[element.dataset.row][element.dataset.col];
       element.textContent = cellValue ?? "";
@@ -148,15 +169,18 @@ const app = {
   },
   editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
-    const saveBtn = document.querySelector(".saveBtn");
-    saveBtn.addEventListener("click", () => {
+    this.elements.saveBtn.addEventListener("click", () => {
       const inputsData = [...document.querySelectorAll(".playerEditedData")];
       const values = inputsData.map((input) => input.value);
       //-------εδώ τώρα θα καλεί την μέθοδο για την αποθήκευση των παικτών στον πίνακα
       addPlayer(0, values[0], values[1]);
       addPlayer(1, values[2], values[3]);
       //--------------------------------------------------------
-      document.querySelector("#edit-players").classList.remove("showing");
+      //ορισμός του currentPlayer μετά από το edit των παικτών
+      this.currentPlayer = this.playerData[0];
+      this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+      //--------------------------------------------------------
+      this.elements.editPlayersSection.classList.remove("showing");
       this.renderPalyers();
     });
   },
@@ -166,6 +190,38 @@ const app = {
         return this.boardData[row][col] === this.currentPlayer.symbol;
       });
     });
+  },
+  checkDraw() {
+    return this.boardData.every((row) => row.every((cell) => cell !== null));
+  },
+  resetBoard() {
+    this.boardData.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        this.boardData[rowIndex][colIndex] = null;
+      });
+    });
+  },
+  disableBoard() {
+    this.elements.boardButtons.forEach((item) => {
+      item.disabled = true;
+    });
+  },
+  closeEditPlayer() {
+    this.elements.editPlayersSection.classList.remove("showing");
+  },
+  newGame() {
+    //κάνεις reset τον πίνακα του παιχνιδιού
+    this.resetBoard();
+    //αλλαγή values στον πίνακα
+    this.elements.boardButtons.forEach((items) => {
+      items.disabled = false;
+      items.value = "";
+    });
+    this.renderBoard();
+    //ορίζεις current player τον πρώτο
+    this.currentPlayer = this.playerData[0];
+    //εμφάνιση σωστού μηνύματος για το ποιος παίκτης έχει σειρά
+    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
   },
 };
 
