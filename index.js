@@ -98,6 +98,7 @@ const app = {
     editPlayerBtn: document.querySelector("#editPlayer"), //ok
     newGameBtn: document.querySelector("#newGame"), //ok
     closeEditPalyerBtn: document.querySelector(".closeBtn"), //ok
+    scoreBoard: document.querySelectorAll("#score .playerScore"),
   },
   init() {
     this.elements.editPlayerBtn.addEventListener("click", () => {
@@ -135,7 +136,10 @@ const app = {
 
         //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
         if (this.checkWinner()) {
+          //μαζί με το score του current πρεπει να ενημερώνω και τον πίνακα playerData
+          this.updatePlayerScore();
           this.disableBoard();
+          this.renderScoreBoard();
           this.elements.winnerSpan.textContent = `${this.currentPlayer.name} win!`;
         } else if (this.checkDraw()) {
           this.elements.winnerSpan.textContent = "It' s a Draw!";
@@ -166,6 +170,15 @@ const app = {
         this.boardData[element.dataset.row][element.dataset.col];
       element.textContent = cellValue ?? "";
     });
+  },
+  renderScoreBoard(){
+    this.elements.scoreBoard.forEach((element, index) => {
+      element.textContent = this.playerData[index].score;
+    });
+  },
+  updatePlayerScore(){
+    //this.currentPlayer.score++;
+    this.playerData[this.playerData.indexOf(this.currentPlayer)].score++;
   },
   editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
