@@ -43,6 +43,7 @@ const app = {
   playerData: players,
   boardData: board,
   currentPlayer: players[0],
+  lastWinner: null,
   winningCombinations: [
     // οριζόντιες
     [
@@ -98,7 +99,7 @@ const app = {
     editPlayerBtn: document.querySelector("#editPlayer"), //ok
     newGameBtn: document.querySelector("#newGame"), //ok
     closeEditPalyerBtn: document.querySelector(".closeBtn"), //ok
-    scoreBoard: document.querySelectorAll("#score .playerScore"),
+    scoreBoard: document.querySelectorAll("#score .playerScore span"),
   },
   init() {
     this.elements.editPlayerBtn.addEventListener("click", () => {
@@ -137,6 +138,7 @@ const app = {
         //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
         if (this.checkWinner()) {
           //μαζί με το score του current πρεπει να ενημερώνω και τον πίνακα playerData
+          this.lastWinner = this.currentPlayer;
           this.updatePlayerScore();
           this.disableBoard();
           this.renderScoreBoard();
@@ -146,15 +148,18 @@ const app = {
         }
 
         //εναλλαγή της σειράς του παίκτη
-        this.currentPlayer =
-          this.currentPlayer === this.playerData[0]
-            ? this.playerData[1]
-            : this.playerData[0];
-        //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
-        this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+        this.toggleCurrentPlayer();
         this.renderBoard();
       });
     });
+  },
+  toggleCurrentPlayer() {
+    this.currentPlayer =
+      this.currentPlayer === this.playerData[0]
+        ? this.playerData[1]
+        : this.playerData[0];
+    //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
+    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
   },
   renderPalyers() {
     //Αλλαγή ονομάτων παικτών στον πίνακα από
@@ -185,6 +190,12 @@ const app = {
     this.elements.saveBtn.addEventListener("click", () => {
       const inputsData = [...document.querySelectorAll(".playerEditedData")];
       const values = inputsData.map((input) => input.value);
+      //με την χρήση του trim() αποφέυγουμε ο χ΄ρηστης να βάλει μόνο space
+      if (values.some((value) => value.trim() === "")) {
+        alert("Please enter players' data.");
+        return;
+      }
+      console.log(values);
       //-------εδώ τώρα θα καλεί την μέθοδο για την αποθήκευση των παικτών στον πίνακα
       addPlayer(0, values[0], values[1]);
       addPlayer(1, values[2], values[3]);
@@ -232,7 +243,7 @@ const app = {
     });
     this.renderBoard();
     //ορίζεις current player τον πρώτο
-    this.currentPlayer = this.playerData[0];
+    this.currentPlayer = this.lastWinner ?? this.playerData[0];
     //εμφάνιση σωστού μηνύματος για το ποιος παίκτης έχει σειρά
     this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
   },

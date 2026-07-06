@@ -106,12 +106,15 @@ main {
 }
 
 main #score {
-  width: 100%;
-  display: flex;
+  width: 50%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  /* display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 #score .player {
@@ -124,6 +127,13 @@ main #score {
   background-color: var(--color-primary);
   color: var(--text-inverse);
   border-radius: 8px;
+}
+#score .playerScore {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 #winnerSection {
@@ -308,4 +318,186 @@ footer {
   font-size: 0.9rem;
   background-color: var(--color-secondary);
   color: var(--text-inverse);
+}
+
+@media (max-width: 768px) {
+  body {
+    justify-content: flex-start;
+  }
+
+  .header-container {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .header-container #title,
+  .header-container #edit-player-btn,
+  .header-container #new-game-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-container #title {
+    order: 1;
+  }
+
+  .header-container #edit-player-btn {
+    order: 2;
+    margin-right: 0;
+  }
+
+  .header-container #new-game-btn {
+    order: 3;
+    margin-left: 0;
+  }
+
+  .header-container #title h2 {
+    font-size: 1.4rem;
+  }
+
+  main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  main #score {
+    width: 100%;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  #score .player {
+    width: min(100%, 12rem);
+    margin: 0;
+    padding: 1rem;
+  }
+
+  #score .playerScore {
+    padding: 0.4rem;
+  }
+
+  #game-board {
+    margin: 1rem 0;
+  }
+
+  .board-row div {
+    width: 85px;
+    height: 85px;
+  }
+
+  #edit-players .popup {
+    max-width: 360px;
+    padding: 1.5rem;
+  }
+
+  #edit-players .playerData,
+  #edit-players .saveData,
+  #edit-players .closeData {
+    width: 100%;
+  }
+
+  #edit-players .saveData button,
+  #edit-players .closeData button {
+    margin: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0.9rem;
+  }
+
+  .header-container #title h2 {
+    font-size: 1.2rem;
+  }
+
+  .header-container #new-game-btn button,
+  .header-container #edit-player-btn button {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  main {
+    padding: 0.75rem;
+  }
+
+  main #score {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    align-items: stretch;
+  }
+
+  #score .player,
+  #score .playerScore {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+
+  #score .player:nth-of-type(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #score .playerScore:nth-of-type(1) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #score .player:nth-of-type(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #score .playerScore:nth-of-type(2) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #winnerSection span {
+    font-size: 1rem;
+  }
+
+  .board-row div {
+    width: 70px;
+    height: 70px;
+  }
+
+  .board-row div button {
+    font-size: 1rem;
+  }
+
+  #player-turn {
+    margin: 0.75rem 0 0;
+  }
+
+  #player-turn span {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  #edit-players .popup {
+    max-width: 92vw;
+    padding: 1.2rem;
+  }
+
+  #edit-players .playerData span {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  #edit-players .playerData input {
+    margin: 0.4rem 0;
+    padding: 0.8rem;
+  }
+
+  footer {
+    padding: 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
 }
