@@ -171,15 +171,6 @@ const app = {
       element.textContent = cellValue ?? "";
     });
   },
-  renderScoreBoard() {
-    this.elements.scoreBoard.forEach((element, index) => {
-      element.textContent = this.playerData[index].score;
-    });
-  },
-  updatePlayerScore() {
-    //this.currentPlayer.score++;
-    this.playerData[this.playerData.indexOf(this.currentPlayer)].score++;
-  },
   editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
     this.elements.saveBtn.addEventListener("click", () => {
