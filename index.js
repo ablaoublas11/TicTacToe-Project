@@ -1,6 +1,7 @@
+//
 const players = [
-  { name: "Player 1", symbol: "X", score: 0 },
-  { name: "Player 2", symbol: "O", score: 0 },
+  createPlayer(),
+  createPlayer(),
 ];
 const board = [
   [null, null, null],
@@ -24,14 +25,18 @@ function createPlayer() {
     _score = 0;
   };
 
-  return { getPlayer, setPlayer };
+  const increamentScore = () => {
+    return ++_score;
+  }
+
+  return { getPlayer, setPlayer, increamentScore };
 }
 
 //μέθοδος για την προσθήκη παίκτη στον πίνακα
 function addPlayer(index, name, symbol) {
   const player = createPlayer();
   player.setPlayer(name, symbol);
-  players[index] = player.getPlayer();
+  players[index] = player;
 }
 
 //μέθοδος με την οποία δηλώνουμε το σύμβολο στο κελί που επιλέγει ο εκάστοτε παίκτης
@@ -40,9 +45,9 @@ function addSymbol(indexRow, indexCol, symbol) {
 }
 
 const app = {
-  playerData: players,
+  playerData: [],
   boardData: board,
-  currentPlayer: players[0],
+  currentPlayer: null,
   lastWinner: null,
   winningCombinations: [
     // οριζόντιες
@@ -102,6 +107,16 @@ const app = {
     scoreBoard: document.querySelectorAll("#score .playerScore span"),
   },
   init() {
+    //αρχικοποίηση των πρώτων τιμών για το παιχνίδι
+    addPlayer(0, "Player 1", "X");
+    addPlayer(1, "Player 2", "O");
+
+    this.playerData = players;
+    this.currentPlayer = this.playerData[0];
+
+    this.renderPlayers();
+    this.renderScoreBoard();
+
     this.elements.editPlayerBtn.addEventListener("click", () => {
       this.elements.editPlayersSection.classList.add("showing");
     });
@@ -161,7 +176,7 @@ const app = {
     //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
     this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
   },
-  renderPalyers() {
+  renderPlayers() {
     //Αλλαγή ονομάτων παικτών στον πίνακα από
     this.elements.scoreElements.forEach((element, index) => {
       element.textContent = this.playerData[index].name;
@@ -184,6 +199,7 @@ const app = {
   updatePlayerScore() {
     //this.currentPlayer.score++;
     this.playerData[this.playerData.indexOf(this.currentPlayer)].score++;
+    
   },
   editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
@@ -205,7 +221,7 @@ const app = {
       this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
       //--------------------------------------------------------
       this.elements.editPlayersSection.classList.remove("showing");
-      this.renderPalyers();
+      this.renderPlayers();
     });
   },
   checkWinner() {
