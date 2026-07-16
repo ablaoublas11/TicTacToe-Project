@@ -1,8 +1,4 @@
-//
-const players = [
-  createPlayer(),
-  createPlayer(),
-];
+//const players = [createPlayer(), createPlayer()];
 const board = [
   [null, null, null],
   [null, null, null],
@@ -13,6 +9,7 @@ const board = [
 function createPlayer() {
   let _name = "Player 1";
   let _symbol = null;
+  //αφαιρείται διότι κάθε φορά που κάνει κάποιος edit τότε αυτό μηδενίζει το score του εκάστοτε παίκτη
   let _score = 0;
 
   const getPlayer = () => {
@@ -22,21 +19,14 @@ function createPlayer() {
   const setPlayer = (newName, newSymbol) => {
     _name = newName;
     _symbol = newSymbol;
-    _score = 0;
+    //_score = 0;
   };
 
   const increamentScore = () => {
     return ++_score;
-  }
+  };
 
   return { getPlayer, setPlayer, increamentScore };
-}
-
-//μέθοδος για την προσθήκη παίκτη στον πίνακα
-function addPlayer(index, name, symbol) {
-  const player = createPlayer();
-  player.setPlayer(name, symbol);
-  players[index] = player;
 }
 
 //μέθοδος με την οποία δηλώνουμε το σύμβολο στο κελί που επιλέγει ο εκάστοτε παίκτης
@@ -104,24 +94,23 @@ const app = {
     saveBtn: document.querySelector(".saveBtn"), //ok
     editPlayerBtn: document.querySelector("#editPlayer"), //ok
     newGameBtn: document.querySelector("#newGame"), //ok
-    closeEditPalyerBtn: document.querySelector(".closeBtn"), //ok
+    closeEditPlayerBtn: document.querySelector(".closeBtn"), //ok
     scoreBoard: document.querySelectorAll("#score .playerScore span"),
   },
   init() {
     //αρχικοποίηση των πρώτων τιμών για το παιχνίδι
-    addPlayer(0, "Player 1", "X");
-    addPlayer(1, "Player 2", "O");
-
-    this.playerData = players;
+    this.addPlayer(0, "Player 1", "X");
+    this.addPlayer(1, "Player 2", "O");
+    //ορισμός του τρέχοντα παίκτη
     this.currentPlayer = this.playerData[0];
-
+    //εμφάνιση των δεδομένων στο html
     this.renderPlayers();
     this.renderScoreBoard();
 
     this.elements.editPlayerBtn.addEventListener("click", () => {
       this.elements.editPlayersSection.classList.add("showing");
     });
-    this.elements.closeEditPalyerBtn.addEventListener("click", () => {
+    this.elements.closeEditPlayerBtn.addEventListener("click", () => {
       this.closeEditPlayer();
     });
     //Καλώ την μέθοδο για την επεξεργασία των παικτών
@@ -134,6 +123,12 @@ const app = {
 
     //καλώ την μέθοδο για την προσθήκη του συμβόλου στον πίνακα
     this.addPlayerSymbol();
+  },
+  //μέθοδος για την προσθήκη παίκτη στον πίνακα
+  addPlayer(index, name, symbol) {
+    const player = createPlayer();
+    player.setPlayer(name, symbol);
+    this.playerData[index] = player;
   },
   //προσθήκη συμβόλου στον πίνακα και έλεγχος νικητή σε κάθε γύρο
   addPlayerSymbol() {
@@ -148,7 +143,7 @@ const app = {
         const row = target.dataset.row;
         const col = target.dataset.col;
         //προσθήκη συμβόλου στον πίνακα
-        addSymbol(row, col, this.currentPlayer.symbol);
+        addSymbol(row, col, this.currentPlayer.getPlayer().symbol);
         //απενεργοποίηση κάθε κουμπιού μετά από κάθε κλικ
         target.disabled = true;
 
@@ -159,13 +154,14 @@ const app = {
           this.updatePlayerScore();
           this.disableBoard();
           this.renderScoreBoard();
-          this.elements.winnerSpan.textContent = `${this.currentPlayer.name} win!`;
+          this.elements.winnerSpan.textContent = `${this.currentPlayer.getPlayer().name} win!`;
         } else if (this.checkDraw()) {
           this.elements.winnerSpan.textContent = "It' s a Draw!";
+        } else {
+          //εναλλαγή της σειράς του παίκτη μόνο εάν δεν υπάρξει νικητής ή δεν έχει βγει ισοπαλία
+          this.toggleCurrentPlayer();
         }
 
-        //εναλλαγή της σειράς του παίκτη
-        this.toggleCurrentPlayer();
         this.renderBoard();
       });
   },
@@ -175,12 +171,12 @@ const app = {
         ? this.playerData[1]
         : this.playerData[0];
     //εμφάνιση ποιος παίκτης έχει σειρά στο παιχνίδι
-    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.getPlayer().name} has turn`;
   },
   renderPlayers() {
     //Αλλαγή ονομάτων παικτών στον πίνακα από
     this.elements.scoreElements.forEach((element, index) => {
-      element.textContent = this.playerData[index].name;
+      element.textContent = this.playerData[index].getPlayer().name;
       index++;
     });
   },
@@ -194,13 +190,12 @@ const app = {
   },
   renderScoreBoard() {
     this.elements.scoreBoard.forEach((element, index) => {
-      element.textContent = this.playerData[index].score;
+      element.textContent = this.playerData[index].getPlayer().score;
     });
   },
   updatePlayerScore() {
     //this.currentPlayer.score++;
-    this.playerData[this.playerData.indexOf(this.currentPlayer)].score++;
-    
+    this.currentPlayer.increamentScore();
   },
   editPlayer() {
     //εδώ γίνεται η αλλαγή των ονομάτων των παικτών
@@ -212,14 +207,13 @@ const app = {
         alert("Please enter players' data.");
         return;
       }
-      console.log(values);
-      //-------εδώ τώρα θα καλεί την μέθοδο για την αποθήκευση των παικτών στον πίνακα
-      addPlayer(0, values[0], values[1]);
-      addPlayer(1, values[2], values[3]);
+      //-------εδώ απλά αλλάζουμε τα δεδομένα στα ήδη υπάρχοντα instances και δεν δημιουργούμε καινούρια αντικείμενα
+      this.playerData[0].setPlayer(values[0], values[1]);
+      this.playerData[1].setPlayer(values[2], values[3]);
       //--------------------------------------------------------
       //ορισμός του currentPlayer μετά από το edit των παικτών
       this.currentPlayer = this.playerData[0];
-      this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+      this.elements.playerTurnSpan.textContent = `${this.currentPlayer.getPlayer().name} has turn`;
       //--------------------------------------------------------
       this.elements.editPlayersSection.classList.remove("showing");
       this.renderPlayers();
@@ -228,7 +222,9 @@ const app = {
   checkWinner() {
     return this.winningCombinations.some((combinations) => {
       return combinations.every(([row, col]) => {
-        return this.boardData[row][col] === this.currentPlayer.symbol;
+        return (
+          this.boardData[row][col] === this.currentPlayer.getPlayer().symbol
+        );
       });
     });
   },
@@ -256,13 +252,13 @@ const app = {
     //αλλαγή values στον πίνακα
     this.elements.boardButtons.forEach((items) => {
       items.disabled = false;
-      items.value = "";
+      items.textContent = "";
     });
     this.renderBoard();
     //ορίζεις current player τον πρώτο
     this.currentPlayer = this.lastWinner ?? this.playerData[0];
     //εμφάνιση σωστού μηνύματος για το ποιος παίκτης έχει σειρά
-    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+    this.elements.playerTurnSpan.textContent = `${this.currentPlayer.getPlayer().name} has turn`;
   },
 };
 
