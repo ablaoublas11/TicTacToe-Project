@@ -96,7 +96,8 @@ const app = {
   ],
   elements: {
     editPlayersSection: document.querySelector("#edit-players"), //ok
-    boardButtons: document.querySelectorAll(".board-row button"), //ok
+    gamingBoardButtons: document.querySelector(".gaming-board"), //ok
+    //boardButtons: document.querySelectorAll(".board-row button"), //ok
     playerTurnSpan: document.querySelector("#player-turn span"), //ok
     winnerSpan: document.querySelector("#winnerSection span"), //ok
     scoreElements: document.querySelectorAll("#score .player"), //ok
@@ -139,16 +140,17 @@ const app = {
     //εδώ θα βάζουμε το σύμβολο του κάθε παίκτη στον πίνακα
     //αρχική δήλωση για το ποιος παίκτης έχει σειρά στο παιχνίδι
     this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
-    this.elements.boardButtons.forEach((element) => {
-      element.addEventListener("click", (e) => {
-        //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
+    this.elements.gamingBoardButtons.addEventListener("click", (e) => {
+      const target = e.target.closest("button");
+      if(!target || target.disabled) return;  
+      //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
         //αντίστοιχο σύμβολο στο σωστό κελί
-        const row = e.target.dataset.row;
-        const col = e.target.dataset.col;
+        const row = target.dataset.row;
+        const col = target.dataset.col;
         //προσθήκη συμβόλου στον πίνακα
         addSymbol(row, col, this.currentPlayer.symbol);
         //απενεργοποίηση κάθε κουμπιού μετά από κάθε κλικ
-        e.target.disabled = true;
+        target.disabled = true;
 
         //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
         if (this.checkWinner()) {
