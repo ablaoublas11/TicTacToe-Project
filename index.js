@@ -87,7 +87,7 @@ const app = {
   elements: {
     editPlayersSection: document.querySelector("#edit-players"), //ok
     gamingBoardButtons: document.querySelector(".gaming-board"), //ok
-    //boardButtons: document.querySelectorAll(".board-row button"), //ok
+    boardButtons: document.querySelectorAll(".board-row button"), //ok
     playerTurnSpan: document.querySelector("#player-turn span"), //ok
     winnerSpan: document.querySelector("#winnerSection span"), //ok
     scoreElements: document.querySelectorAll("#score .player"), //ok
