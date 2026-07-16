@@ -168,7 +168,6 @@ const app = {
         this.toggleCurrentPlayer();
         this.renderBoard();
       });
-    });
   },
   toggleCurrentPlayer() {
     this.currentPlayer =
