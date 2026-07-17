@@ -135,35 +135,37 @@ const app = {
     //εδώ θα βάζουμε το σύμβολο του κάθε παίκτη στον πίνακα
     //αρχική δήλωση για το ποιος παίκτης έχει σειρά στο παιχνίδι
     this.elements.playerTurnSpan.textContent = `${this.currentPlayer.name} has turn`;
+    //Χρήση Event delegation για να μην έχουμε έναν event listener για κάθε ένα button
+    //αλλά μόνο για το parent tag που είναι το Gaming board div
     this.elements.gamingBoardButtons.addEventListener("click", (e) => {
       const target = e.target.closest("button");
-      if(!target || target.disabled) return;  
+      if (!target || target.disabled) return;
       //εδώ πρώτα θα τσεκάρουμε ποιανού παίκτη σειρά είναι και μετά θα βάζουμε το
-        //αντίστοιχο σύμβολο στο σωστό κελί
-        const row = target.dataset.row;
-        const col = target.dataset.col;
-        //προσθήκη συμβόλου στον πίνακα
-        addSymbol(row, col, this.currentPlayer.getPlayer().symbol);
-        //απενεργοποίηση κάθε κουμπιού μετά από κάθε κλικ
-        target.disabled = true;
+      //αντίστοιχο σύμβολο στο σωστό κελί
+      const row = target.dataset.row;
+      const col = target.dataset.col;
+      //προσθήκη συμβόλου στον πίνακα
+      addSymbol(row, col, this.currentPlayer.getPlayer().symbol);
+      //απενεργοποίηση κάθε κουμπιού μετά από κάθε κλικ
+      target.disabled = true;
 
-        //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
-        if (this.checkWinner()) {
-          //μαζί με το score του current πρεπει να ενημερώνω και τον πίνακα playerData
-          this.lastWinner = this.currentPlayer;
-          this.updatePlayerScore();
-          this.disableBoard();
-          this.renderScoreBoard();
-          this.elements.winnerSpan.textContent = `${this.currentPlayer.getPlayer().name} win!`;
-        } else if (this.checkDraw()) {
-          this.elements.winnerSpan.textContent = "It' s a Draw!";
-        } else {
-          //εναλλαγή της σειράς του παίκτη μόνο εάν δεν υπάρξει νικητής ή δεν έχει βγει ισοπαλία
-          this.toggleCurrentPlayer();
-        }
+      //έλεγχος εάν υπάρχει νικητής στο παιχνίδι
+      if (this.checkWinner()) {
+        //μαζί με το score του current πρεπει να ενημερώνω και τον πίνακα playerData
+        this.lastWinner = this.currentPlayer;
+        this.updatePlayerScore();
+        this.disableBoard();
+        this.renderScoreBoard();
+        this.elements.winnerSpan.textContent = `${this.currentPlayer.getPlayer().name} win!`;
+      } else if (this.checkDraw()) {
+        this.elements.winnerSpan.textContent = "It' s a Draw!";
+      } else {
+        //εναλλαγή της σειράς του παίκτη μόνο εάν δεν υπάρξει νικητής ή δεν έχει βγει ισοπαλία
+        this.toggleCurrentPlayer();
+      }
 
-        this.renderBoard();
-      });
+      this.renderBoard();
+    });
   },
   toggleCurrentPlayer() {
     this.currentPlayer =
